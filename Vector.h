@@ -3,32 +3,30 @@
 #include <iostream>
 using namespace std;
 
-template<typename type>
-class Vector {
-private:
+template<typename type> class Vector {
+
+protected:
     type *data;
     size_t allocatedDataSize;
     size_t usingDataSize;
 
+private:
     /**
-     * extend size of the vector
-     * Zmiana rozmiaru wektora
-     * @param newSizeValue new size for vector
-     */
+     * Extend size of the vector - zmiana rozmiaru wektora
+     * @param newSizeValue - new size for vector (nowy rozmiar wektora)
+    */
     void changeVectorSize(size_t newSizeValue);
 
 public:
     /**
-     * Create empty vector
-     * Tworzenie pustego wektora
-     */
+     * Create empty vector - tworzenie pustego wektora
+    */
     Vector();
 
     /**
-     * Create vector with passed size
-     * Tworzenie wektor o podanym rozmiarze
-     * @param usingDataSize size of creating vector
-     */
+     * Create vector with passed size - tworzenie wektora o podanym rozmiarze
+     * @param usingDataSize - size of creating vector (rozmiar dla tworzonego wektora)
+    */
     Vector(size_t usingDataSize);
 
     /**
@@ -38,39 +36,34 @@ public:
     ~Vector();
 
     /**
-     * Get element from specified index
-     * Pobieranie elementów spod przekazanego indeksu
-     * @param index index of element
-     * @return reference to element
-     */
+     * Get element from specified index - pobieranie elementów spod przekazanego indeksu
+     * @param index - index of element (indeks elementu)
+     * @return reference to element (referencja do elementu)
+    */
     type *at(size_t index);
 
     /**
-     * Get address of first element
-     * Pobieranie adresu pierwszego elementu
-     * @return address of first element
-     */
+     * Get address of first element - pobieranie adresu pierwszego elementu
+     * @return address of first element (adres pierwszego elementu)
+    */
     type *front();
 
     /**
-     * Get address of last element
-     * Pobieranie adresu ostatniego używanego elementu
-     * @return address of last element
-     */
+     * Get address of last element - pobieranie adresu ostatniego używanego elementu
+     * @return address of last element (adres ostatniego elementu)
+    */
     type *back();
 
     /**
-     * Get size of using data
-     * Pobieranie rozmiaru tablicy (używanej części)
-     * @return size of using vector
-     */
+     * Get size of using data - pobieranie rozmiaru tablicy (uzywanej czesci)
+     * @return size of using vector (rozmiar uzywanego wektora)
+    */
     size_t size();
 
     /**
-     * Add new element on the end of vector
-     * Dodaj nowy element na koniec wektora
-     * @param newRecord new value
-     */
+     * Add new element on the end of vector - dodaj nowy element na koniec wektora
+     * @param newRecord - new value (nowa wartosc)
+    */
     void pushBack(type newRecord);
 
     /**
@@ -80,10 +73,9 @@ public:
     void popBack();
 
     /**
-     * Check vector is empty
-     * Sprawdzanie, czy wektor jest pusty
-     * @return true if vector is empty, false if not empty
-     */
+     * Check vector is empty - sprawdzanie, czy wektor jest pusty
+     * @return true if vector is empty, false if not empty (prawda jezeli pusty, falsz jezeli niepusty)
+    */
     bool isEmpty();
 
     /** Dodatkowe
@@ -101,12 +93,13 @@ public:
     /**
      * Delete element on passed index
      * Usuwanie elementu pod wskazanym indeksem
-     * @param size_t index of element to erase
-     */
+     * @param index - index of element to erase (indeks wskazanego elementu do usuniecia)
+    */
     void erase(size_t index);
 };
 
 // Implementation
+
 template<typename type>
 inline Vector<type>::Vector() {
     data = new type[1];
