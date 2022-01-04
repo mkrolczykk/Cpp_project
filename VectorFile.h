@@ -1,10 +1,14 @@
 #pragma once
-#include "Vector.h"
 #include <fstream>
 #include <string>
 
+#include "Vector.h"
+#include "MessagingService.h"
+
 template<typename type>
 class VectorFile : public Vector<type> {
+private:
+	MessagingService logger;
 public:
 	/**
 	 * Create empty object of VectorFile - tworzenie pustego obiektu
@@ -67,4 +71,4 @@ inline void VectorFile<type>::operator<<(const string fileName) {
 
 	output.close();
 	cout << "Saving complete\n" << endl;
-};
+}

@@ -91,4 +91,8 @@ int main() {
 
     vectorFile >> fileName;    // odczyt wszystkich zapisanych danych
     */
+    // Etap 3
+    cout << "\n\nEtap 3 ---------------------------------------------------------" << endl;
+
+    //TODO
 }

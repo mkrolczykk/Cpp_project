@@ -1,22 +1,22 @@
 ﻿#pragma once
-
 #include <iostream>
+
+#include "MessagingService.h"
+
 using namespace std;
 
 template<typename type> class Vector {
-
-protected:
-    type *data;
-    size_t allocatedDataSize;
-    size_t usingDataSize;
-
 private:
+    MessagingService logger;
     /**
      * Extend size of the vector - zmiana rozmiaru wektora
      * @param newSizeValue - new size for vector (nowy rozmiar wektora)
     */
     void changeVectorSize(size_t newSizeValue);
-
+protected:
+    type* data;
+    size_t allocatedDataSize;
+    size_t usingDataSize;
 public:
     /**
      * Create empty vector - tworzenie pustego wektora
@@ -31,8 +31,8 @@ public:
 
     /**
      * Deallocating, do cleanings
-     * Zwalnianie pamięci, robienie porządków
-     */
+     * Zwalnianie pamięci
+    */
     ~Vector();
 
     /**
@@ -129,17 +129,17 @@ Vector<type>::~Vector() {
 template<typename type>
 type* Vector<type>::at(size_t index) {
     if (index >= 0 && index < usingDataSize) return &data[index];
-    else throw out_of_range("Index out of range");
+    else throw out_of_range("\nPodano index poza dozwolonym zakresem!\n");
 }
 
 template<typename type>
 type* Vector<type>::front() {
-    return size() >= 1 ? &data[0] : throw exception("Given vector is empty");
+    return size() >= 1 ? &data[0] : throw exception("\nWektor jest pusty!\n");
 }
 
 template<typename type>
 type* Vector<type>::back() {
-    return size() >= 1 ? &data[usingDataSize - 1] : throw exception("Given vector is empty");
+    return size() >= 1 ? &data[usingDataSize - 1] : throw exception("\nWektor jest pusty!\n");
 }
 
 template<typename type>
@@ -191,7 +191,7 @@ inline void Vector<type>::showVectorData() {
     if (this->usingDataSize > 0) {
         cout << "\nVector data: " << endl;
         for (int i = 0; i < this->usingDataSize; ++i) cout << this->data[i] << endl;
-    } else cout << "\nVector is empty\n" << endl;
+    } else logger.message(Message::WARN_VEC_EMPTY);
 }
 
 template<typename type>
