@@ -21,7 +21,7 @@ public:
 	 * Reading data from a binary file - odczytywanie danych z pliku binrnego
 	 * @param fileName - file name to read from (nazwa pliku do odczytu)
 	*/
-	Vector<typename type>& operator>>(const string fileName);
+	void operator>>(const string fileName);
 
 	/**
 	 * Writing data to a binary file - zapisywanie danych do pliku binarnego
@@ -33,8 +33,8 @@ public:
 // Implementation
 
 template<typename type>
-inline Vector<type> &VectorFile<type>::operator>>(const string fileName) {
-	type bufor;
+inline void VectorFile<type>::operator>>(const string fileName) {
+	type buffer;
 	ifstream input(fileName, ios::binary | ios::in);
 
 	if (!input.is_open()) {
@@ -44,12 +44,10 @@ inline Vector<type> &VectorFile<type>::operator>>(const string fileName) {
 
 	this->clear();
 	
-	while (input.read(reinterpret_cast<char*>(&bufor), sizeof(bufor))) this->pushBack(bufor);
+	while (input.read(reinterpret_cast<char*>(&buffer), sizeof(buffer))) this->pushBack(buffer);
 	
 	input.close();
-
-	cout << "Vector data from file '" << fileName << "':" << endl;
-	for (int i = 0; i < this->usingDataSize; ++i) cout << this->data[i] << endl;
+	cout << "Succesfully loaded data from file '" << fileName << "'" << endl;
 };
 
 template<typename type>

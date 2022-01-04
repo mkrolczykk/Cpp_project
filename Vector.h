@@ -96,6 +96,12 @@ public:
      * @param index - index of element to erase (indeks wskazanego elementu do usuniecia)
     */
     void erase(size_t index);
+
+    /** Dodatkowe
+     * Show Vector data
+     * Wyswietl zawartosc wektora
+    */
+    void showVectorData();
 };
 
 // Implementation
@@ -178,6 +184,14 @@ void Vector<type>::erase(size_t index) {
     for (; i != data + allocatedDataSize; ++i, ++j) *j = *i;
 
     usingDataSize--;
+}
+
+template<typename type>
+inline void Vector<type>::showVectorData() {
+    if (this->usingDataSize > 0) {
+        cout << "\nVector data: " << endl;
+        for (int i = 0; i < this->usingDataSize; ++i) cout << this->data[i] << endl;
+    } else cout << "\nVector is empty\n" << endl;
 }
 
 template<typename type>

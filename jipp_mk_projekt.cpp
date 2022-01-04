@@ -63,14 +63,21 @@ int main() {
 
     /*
     Przykladowe uzycie - schemat z Github
-    */
+    
     vectorFile.pushBack(10);
     vectorFile.pushBack(11);
     vectorFile.pushBack(12);
     vectorFile.pushBack(15);
     
     vectorFile << fileName;    // zapis binarny do pliku
-    
+    */
+
+    vectorFile >> fileName;     // odczyt z pliku binarnego
+    vectorFile.showVectorData();
+
+    //cout << *vectorFile.back() << endl;
+
+    /*
     vectorFile.popBack();
     vectorFile.popBack();
     
@@ -83,4 +90,5 @@ int main() {
     vectorFile << fileName;    // zapis binarny nr 2 do pliku
 
     vectorFile >> fileName;    // odczyt wszystkich zapisanych danych
+    */
 }
