@@ -7,20 +7,25 @@ MCoord::MCoord(double xx, double yy) {
 	pcoord[1] = yy;
 }
 
-MCoord::MCoord() { 
-	allocateMemory();
-}
+MCoord::MCoord() : MCoord(0,0){}
 
 MCoord::~MCoord() {
-	if (pcoord != NULL) {
+	if (pcoord != nullptr) {
 		delete[] pcoord;
-		pcoord = NULL;
+		pcoord = nullptr;
 	}
 }
 
 void MCoord::allocateMemory() {
-	pcoord = NULL;
+	pcoord = nullptr;
 
 	try { pcoord = new double[2]; }
-	catch (bad_alloc) { logger.message(Message::ERR_ALLOC_MEM); }
+	catch (bad_alloc) { 
+		logger.message(Message::ERR_ALLOC_MEM);
+	}
+}
+
+MCoord::MCoord(const MCoord& cd) : MCoord(0,0) {
+	this->pcoord[0] = cd.pcoord[0];
+	this->pcoord[1] = cd.pcoord[1];
 }

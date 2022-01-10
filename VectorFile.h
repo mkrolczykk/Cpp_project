@@ -42,33 +42,28 @@ inline void VectorFile<type>::operator>>(const string fileName) {
 	ifstream input(fileName, ios::binary | ios::in);
 
 	if (!input.is_open()) {
-		cout << "\nError on opening file!\n" << endl;
-		exit(1);
-	}
+		logger.message(Message::ERR_OPEN_FILE);
+	} else {
+		while (input >> buffer) this->pushBack(buffer);
+	
+		if(input.eof()) logger.message(Message::INFO_READ_FILE_SUCCESS);
 
-	this->clear();
-	
-	while (input.read(reinterpret_cast<char*>(&buffer), sizeof(buffer))) this->pushBack(buffer);
-	
-	input.close();
-	cout << "Succesfully loaded data from file '" << fileName << "'" << endl;
-};
+		input.close();
+	}
+}
 
 template<typename type>
 inline void VectorFile<type>::operator<<(const string fileName) {
 	ofstream output(fileName, ios::binary | ios::out);
 
 	if (!output.is_open()) {
-		cout << "\nError on opening file!\n" << endl;
+		logger.message(Message::ERR_OPEN_FILE);
+		system("pause");
 		exit(1);
 	}
 
-	cout << "\nStart saving vector data to file '" << fileName << "'\n" << endl;
-
-	char* ptr = reinterpret_cast<char *>(this->data);
-
-	for (int i = 0; i < this->usingDataSize * sizeof(type); ++i) output.put(ptr[i]);
+	for (size_t i = 0; i < this->usingDataSize; i++) output << this->data[i];
 
 	output.close();
-	cout << "Saving complete\n" << endl;
+	logger.message(Message::INFO_WRITE_FILE_SUCCESS);
 }

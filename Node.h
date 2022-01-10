@@ -43,13 +43,12 @@ public:
 	*/
 	bool operator==(const Node &obj);
 
-	/** ????????????????????????????????
-	 * Overload of operator '==' - przeciazenie operatora porownania '=='
-	 * @param obj - the object for comparison (obiekt do porownywania)
-	 * @return true if equal or false if not (prawda jezeli obiekty sa takie same, falsz jezeli nie)
+	/**
+	 * Overload of operator '==' for searching by number of vertex - przeciazenie operatora porownania '==' dla szukania tylko po numerach wierzcholkow
+	 * @param obj - number of vertex (numer wierzcholka)
+	 * @return true if equal or false if not (prawda jezeli numery wierzcholkow sa takie same, falsz jezeli nie)
 	*/
-
-	//bool operator==(const int &obj); ????????????????????????????
+	bool operator==(const int &obj);
 
 	/**
 	 * Output stream handling - obsluga strumienia wyjscia
@@ -66,5 +65,21 @@ public:
 	 * @return reference to input stream (referencja do strumienia wejsciowego)
 	*/
 	friend istream &operator>>(istream &in, Node &obj);
+
+	/**
+	 * Output file stream handling - obsluga strumienia wyjscia pliku
+	 * @param out - output file stream (strumien wyjsciowy pliku)
+	 * @param obj - the object for being streamed out (obiekt do wypisania na strumieniu wyjscia)
+	 * @return reference to file output stream (referencja do strumienia wyjsciowego dla pliku)
+	*/
+	friend ofstream& operator<<(ofstream& out, const Node& obj);
+
+	/**
+	 * Input file stream handling - obsluga strumienia wejscia pliku
+	 * @param out - input file stream (strumien wejsciowy dla pliku)
+	 * @param obj - the object for being streamed in (obiekt dla wartosci uzyskanych ze strumienia wejscia)
+	 * @return reference to input file stream (referencja do strumienia wejsciowego dla pliku)
+	*/
+	friend ifstream& operator>>(ifstream& in, Node& obj);
 };
 

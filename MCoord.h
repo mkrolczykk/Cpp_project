@@ -29,6 +29,12 @@ public:
 	MCoord();
 
 	/**
+	 * Create object from other object of the same type - tworzenie obiektu na bazie innego obiektu tego samego typu
+	 * @param cd - reference to object - adres do obiektu
+	*/
+	MCoord(const MCoord& cd);
+
+	/**
 	 * Deallocating, do cleanings
 	 * Zwalnianie pamieci
 	*/
