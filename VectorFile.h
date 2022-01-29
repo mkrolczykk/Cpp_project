@@ -6,7 +6,8 @@
 #include "MessagingService.h"
 
 template<typename type>
-class VectorFile : public Vector<type> {
+class VectorFile : public Vector<type>
+{
 private:
 	MessagingService logger;
 public:
@@ -37,11 +38,13 @@ public:
 // Implementation
 
 template<typename type>
-inline void VectorFile<type>::operator>>(const string fileName) {
+inline void VectorFile<type>::operator>>(const string fileName)
+{
 	type buffer;
 	ifstream input(fileName, ios::binary | ios::in);
 
-	if (!input.is_open()) {
+	if (!input.is_open())
+	{
 		logger.message(Message::ERR_OPEN_FILE);
 	} else {
 		while (input >> buffer) this->pushBack(buffer);
@@ -53,10 +56,12 @@ inline void VectorFile<type>::operator>>(const string fileName) {
 }
 
 template<typename type>
-inline void VectorFile<type>::operator<<(const string fileName) {
+inline void VectorFile<type>::operator<<(const string fileName)
+{
 	ofstream output(fileName, ios::binary | ios::out);
 
-	if (!output.is_open()) {
+	if (!output.is_open())
+	{
 		logger.message(Message::ERR_OPEN_FILE);
 		system("pause");
 		exit(1);

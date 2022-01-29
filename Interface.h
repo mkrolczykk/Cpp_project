@@ -52,8 +52,7 @@ enum CommandMessage {
 class Interface {
 private:
 	bool run;	// true = program on, false = program off
-	Vector<Node> vector;
-	Node obj;
+	Vector<MCoord*> vector;
 	MessagingService logger;
 	string* menu;                 // tablica tekstowa dostepnych polecen w menu
 	string* description;		  // tablica tekstowa komunikatow dla polecen z menu
@@ -152,5 +151,7 @@ public:
 	 * Obsluz nieokreslone dzialania uzytkownika (bledny wybor opcji w menu)
 	*/
 	void wrongChoice();
+
+	friend istream& operator>>(istream& is, Interface& ifc);
 };
 

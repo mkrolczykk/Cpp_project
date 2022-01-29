@@ -15,18 +15,17 @@ MessagingService::MessagingService() {
 	messageContainer[INFO_READ_FILE_SUCCESS] = "\nPomyslnie wczytano dane z pliku. \n";
 	messageContainer[INFO_WRITE_FILE_SUCCESS] = "\nPomyslnie zapisano dane w podanym pliku. \n";
 	messageContainer[INFO_SEARCH_COMPLETE] = "\nSzukanie obiektow zakonczone. \n";
+	messageContainer[COMMAND_FINISHED] = "\nWcisnij dowolny przycisk aby przejsc do menu. \n";
 	messageContainer[NO_FUNCTION] = "\nFunkcja nie istnieje! \n";
 }
 
 MessagingService::~MessagingService() {
-	if (messageContainer != NULL) {
+	if (messageContainer != nullptr) {
 		delete[] messageContainer;
-		messageContainer = NULL;
+		messageContainer = nullptr;
 	}
 }
 
 void MessagingService::message(enum Message message) {
 	cout << messageContainer[message] << endl;
-	system("pause");
-	// if (message < 4) exit(1);
 }

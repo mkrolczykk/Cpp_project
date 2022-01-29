@@ -29,6 +29,11 @@ public:
 	*/
 	Node(Node &toCopy);
 
+	~Node();
+
+	std::string printValue() const override;
+	bool isEqual(const int& key) const override;
+
 	/**
 	 * Overload of operator '=' - przeciazenie operatora '='
 	 * @param obj - the object being assigned (obiekt przypisywany)

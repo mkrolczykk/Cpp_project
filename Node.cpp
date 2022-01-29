@@ -2,6 +2,8 @@
 
 #include "Node.h"
 
+using namespace std;
+
 Node::Node(int nb, char* st, double xx, double yy) : MCoord(xx, yy) {
 	numb = nb;
 	strcpy_s(str, st);
@@ -19,6 +21,10 @@ Node::Node(Node &toCopy) {
 	strcpy_s(str, sizeof(str), toCopy.str);
 }
 
+Node::~Node()
+{
+}
+
 Node& Node::operator=(const Node &obj) {
 	if (this == &obj) return *this;
 
@@ -34,17 +40,31 @@ bool Node::operator==(const Node &obj) {
 	return ((numb == obj.numb) && (pcoord[0] == obj.pcoord[0]) && (pcoord[1] == obj.pcoord[1]));
 }
 
-bool Node::operator==(const int &obj) {
+bool Node::operator==(const int &obj)
+{
 	return (numb == obj);
 }
 
-ostream& operator<<(ostream &out, const Node &obj) {
-	out << "Nazwa wierzcholka: '" << obj.str << "', numer wierzcholka: " << obj.numb << ", pcoord: (" << obj.pcoord[0] << "," << obj.pcoord[1] << ")" << endl;
+string Node::printValue() const
+{
+	string retVal = "Nazwa wierzcholka: '" + string(this->str) + "', numer wierzcholka: " + to_string(this->numb) + ", pcoord: (" + to_string(this->pcoord[0]) + "," + to_string(this->pcoord[1]) + ")";
+	return retVal;
+}
+
+bool Node::isEqual(const int& key) const
+{
+	return (key == this->numb);
+}
+
+ostream& operator<<(ostream &out, const Node &obj)
+{
+	out << obj.printValue() << endl;
 
 	return out;
 }
 
-istream& operator>>(istream &in, Node &obj) {
+istream& operator>>(istream &in, Node &obj)
+{
 	cout << "nazwa: ";
 	in >> obj.str;
 	cout << "numer: ";
@@ -57,7 +77,8 @@ istream& operator>>(istream &in, Node &obj) {
 	return in;
 }
 
-ofstream& operator<<(ofstream& out, const Node& obj) {
+ofstream& operator<<(ofstream& out, const Node& obj)
+{
 	out.write(reinterpret_cast<const char*>(&obj.str), sizeof(obj.str));
 	out.write(reinterpret_cast<const char*>(&obj.numb), sizeof(obj.numb));
 	out.write(reinterpret_cast<const char*>(&obj.pcoord[0]), sizeof(obj.pcoord[0]));
@@ -66,7 +87,8 @@ ofstream& operator<<(ofstream& out, const Node& obj) {
 	return out;
 }
 
-ifstream& operator>>(ifstream& in, Node& obj) {
+ifstream& operator>>(ifstream& in, Node& obj)
+{
 	in.read(reinterpret_cast<char*>(&obj.str), sizeof(Node::str));
 	in.read(reinterpret_cast<char*>(&obj.numb), sizeof(Node::numb));
 	in.read(reinterpret_cast<char*>(&obj.pcoord[0]), sizeof(obj.pcoord[0]));

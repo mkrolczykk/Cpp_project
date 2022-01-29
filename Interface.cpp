@@ -1,8 +1,7 @@
 #include "Interface.h"
 
-Interface::Interface() {
-	run = true;
-	
+Interface::Interface() : run(true)
+{
 	menu = new string[__COMMAND_CONTAINER_SIZE__];
 	menu[COMMAND_PUSH] = "Dodaj obiekt \n";
 	menu[COMMAND_POP] = "Usun obiekt z konca \n";
@@ -31,7 +30,8 @@ Interface::Interface() {
 	description[FILE_LOAD] = "\nOdczytano dane z pliku.\n";
 }
 
-Interface::~Interface() {
+Interface::~Interface()
+{
 	if (menu != nullptr) {
 		delete[] menu;
 		menu = nullptr;
@@ -42,27 +42,36 @@ Interface::~Interface() {
 	}
 }
 
-bool Interface::isRunning() { return run; }
+bool Interface::isRunning()
+{
+	return run;
+}
 
-void Interface::showMenu() {
+void Interface::showMenu()
+{
 	cout << "\t\t***************MENU***************" << endl;
 	cout << "\tWybierz opcje od 0 do " << __COMMAND_CONTAINER_SIZE__ - 1 << " wpisujac odpowiedni numer \n" << endl;
 	for (int i = 0; i < __COMMAND_CONTAINER_SIZE__; i++) cout << i << ") " << menu[i] << endl;
+	cout << "Wybierz operacje: ";
 }
 
-void Interface::push() {
+void Interface::push()
+{
+	Node* newObj = new Node();
 	cout << description[PUSH_INFO];
-	cin >> obj;
-	vector.pushBack(obj);
+	cin >> *newObj;
+	vector.pushBack(newObj);
 
 	cout << description[OBJ_ADDED] << endl;
-
-	system("pause");
 }
 
-void Interface::pop() { vector.popBack(); }
+void Interface::pop()
+{
+	vector.popBack();
+}
 
-void Interface::erase() {
+void Interface::erase()
+{
 	vector.showVectorData();
 	if (!vector.isEmpty()) {
 		cout << description[ERASE_INFO];
@@ -72,16 +81,16 @@ void Interface::erase() {
 	}
 }
 
-void Interface::clear() {
+void Interface::clear()
+{
 	if(!vector.isEmpty()) {
 		vector.clear();
 		cout << description[OBJ_ARE_DEL] << endl;
 	} else logger.message(Message::WARN_VEC_EMPTY);
-
-	system("pause");
 }
 
-void Interface::modify() {
+void Interface::modify()
+{
 	if (!vector.isEmpty()) {
 		int index;
 		vector.showVectorData();
@@ -89,51 +98,55 @@ void Interface::modify() {
 		cin >> index;
 		
 		try {
-			cin >> *vector.at(index);
+			Node* nodeToModPtr = dynamic_cast<Node*>(*vector.at(index));
+			if (nodeToModPtr != nullptr) cin >> *nodeToModPtr;
 		} catch(out_of_range) {};
 	} else logger.message(Message::WARN_VEC_EMPTY);
 	
 }
 
-void Interface::insert() {
+void Interface::insert()
+{
 	size_t position;
+	Node* newObj = new Node();
+
 	cout << description[INSERT_INFO] << endl;
 	cin >> position;
+
 	if (position < 0 || position > vector.size()) logger.message(Message::WARN_INDEX_OUT_OF_RANGE);
 	else {
 		cout << description[PUSH_INFO];
-		cin >> obj;
-		vector.insert(obj, position);
+		cin >> *newObj;
+		vector.insert(newObj, position);
 	}
 
 	cout << description[OBJ_ADDED] << endl;
-
-	system("pause");
-
 }
 
-void Interface::findObjects() {
+void Interface::findObjects()
+{
 	int key;
 	cout << description[FIND_INFO] << endl;
 	cin >> key;
 
-	Node* ptr = vector.front();
+	MCoord** ptr = vector.front();
 
-	do {
-		ptr = find<Node, int>(ptr, vector.back(), key);
-		if (ptr != nullptr) {
+	do
+	{
+		ptr = find<MCoord*, int>(ptr, vector.back(), key);
+		if (ptr != nullptr)
+		{
 			const size_t dst = ptr - vector.front();
-			cout << "Znaleziono obiekt na miejscu (indeksie) nr " << dst << ": " << *ptr << endl;
+			cout << "Znaleziono obiekt na miejscu (indeksie) nr " << dst << ": " << **ptr << endl;
 			ptr += 1;
 		}
 	} while (ptr != nullptr);
 
 	logger.message(Message::INFO_SEARCH_COMPLETE);
-
-	system("pause");
 }
 
-void Interface::save() {
+void Interface::save()
+{
 	// const string fileName = "binaryFile.dat";	// for testing
 	string fileName;
 	VectorFile<Node> vectorFile;
@@ -141,12 +154,24 @@ void Interface::save() {
 	cout << description[SAVE_INFO] << endl; 
 	cin >> fileName;
 
-	for (size_t i = 0; i < vector.size(); i++) vectorFile.pushBack(*vector.at(i));
+	for (size_t i = 0; i < vector.size(); i++)
+	{
+		try
+		{
+			Node& tmpNode = dynamic_cast<Node&>(**vector.at(i));
+			vectorFile.pushBack(tmpNode);
+		}
+		catch (const std::bad_cast&)
+		{
+
+		}
+	}
 
 	vectorFile << fileName;
 }
-
-void Interface::load() {
+ 
+void Interface::load()
+{
 	// const string fileName = "binaryFile.dat";	// for testing
 	string fileName;
 	VectorFile<Node> vectorFile;
@@ -155,14 +180,78 @@ void Interface::load() {
 	cin >> fileName;
 
 	vectorFile >> fileName;
-	vector = vectorFile;
+	for (size_t i = 0; i < vectorFile.size(); i++)
+	{
+		Node* newObj = new Node();
+		*newObj = *vectorFile.at(i);
+		vector.pushBack(newObj);
+	}
 }
 
-void Interface::display() {
+void Interface::display()
+{
 	vector.showVectorData(); 
-	system("pause");
 }
 
 void Interface::finish() { run = false; }
 
 void Interface::wrongChoice() { logger.message(WARN_MENU_WRONG_CHOICE); }
+
+istream& operator>>(istream& is, Interface& ifc)
+{
+	int choice = -1;
+
+	is >> choice;
+
+	if (is.fail())
+	{
+		ifc.logger.message(WARN_MENU_WRONG_CHOICE);
+		is.clear(istream::failbit);
+	}
+
+	switch (choice) {
+	case 0:
+		ifc.push();
+		break;
+	case 1:
+		ifc.pop();
+		break;
+	case 2:
+		ifc.erase();
+		break;
+	case 3:
+		ifc.clear();
+		break;
+	case 4:
+		ifc.modify();
+		break;
+	case 5:
+		ifc.insert();
+		break;
+	case 6:
+		ifc.findObjects();
+		break;
+	case 7:
+		ifc.save();
+		break;
+	case 8:
+		ifc.load();
+		break;
+	case 9:
+		ifc.display();
+		break;
+	case 10:
+		ifc.finish();
+		break;
+	default:
+		ifc.wrongChoice();
+		break;
+	}
+
+	if (choice != 10)
+	{
+		system("pause");
+	}
+
+	return is;
+}

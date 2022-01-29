@@ -21,6 +21,7 @@ enum Message {
 	INFO_WRITE_FILE_SUCCESS,	// pomyslnie zapisano dane w podanym pliku
 	INFO_SEARCH_COMPLETE,		// szukanie zakonczone
 	NO_FUNCTION,				// brak funkcji
+	COMMAND_FINISHED,			// koniec zadanej operacji
 
 	__MESSAGE_CONTAINER_SIZE__			// rozmiar enum (liczba komunikatow)
 };

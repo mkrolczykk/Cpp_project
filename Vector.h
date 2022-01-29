@@ -5,7 +5,8 @@
 
 using namespace std;
 
-template<typename type> class Vector {
+template<typename type> class Vector
+{
 private:
     size_t defaultAllocationSize = 10;
     MessagingService logger;
@@ -119,6 +120,7 @@ public:
     void showVectorData();
 };
 
+
 /**
  * Searching for an item in an array - wyszukiwanie elementu w tablicy
  * @param p_begin - pointer to the first element of array (wskaznik na pierwszy element tablicy)
@@ -132,27 +134,31 @@ type* find(const type *p_begin, const type *p_end, const Key& k);
 // Implementation
 
 template<typename type>
-inline Vector<type>::Vector() {
+inline Vector<type>::Vector()
+{
     data = new type[defaultAllocationSize];
     allocatedDataSize = defaultAllocationSize;
     usingDataSize = 0;
 }
 
 template<typename type>
-Vector<type>::Vector(size_t usingDataSize) {
+Vector<type>::Vector(size_t usingDataSize)
+{
     data = new type[usingDataSize];
     this->allocatedDataSize = usingDataSize;
     this->usingDataSize = 0;
 }
 
 template<typename type>
-Vector<type>::~Vector() {
+Vector<type>::~Vector()
+{
     delete[] data;
     data = nullptr;
 }
 
 template<typename type>
-Vector<type>& Vector<type>::operator=(const Vector<type>& v) {
+Vector<type>& Vector<type>::operator=(const Vector<type>& v)
+{
     if (this == &v) return *this;
     if (data != nullptr) {
         delete[] data;
@@ -170,7 +176,8 @@ Vector<type>& Vector<type>::operator=(const Vector<type>& v) {
 
 
 template<typename type>
-type* Vector<type>::at(size_t index) {
+type* Vector<type>::at(size_t index)
+{
     if (index >= 0 && index < usingDataSize) return &data[index];
     
     logger.message(Message::WARN_INDEX_OUT_OF_RANGE);
@@ -178,39 +185,50 @@ type* Vector<type>::at(size_t index) {
 }
 
 template<typename type>
-type* Vector<type>::front() {
+type* Vector<type>::front()
+{
     return size() >= 1 ? &data[0] : throw exception("\nWektor jest pusty!\n");
 }
 
 template<typename type>
-type* Vector<type>::back() {
+type* Vector<type>::back()
+{
     return size() >= 1 ? &data[usingDataSize - 1] : throw exception("\nWektor jest pusty!\n");
 }
 
 template<typename type>
-size_t Vector<type>::size() {
+size_t Vector<type>::size()
+{
     return usingDataSize;
 }
 
 template<typename type>
-void Vector<type>::pushBack(type newRecord) {
+void Vector<type>::pushBack(type newRecord)
+{
     if (usingDataSize >= allocatedDataSize) changeVectorSize(allocatedDataSize * 2);
     data[usingDataSize++] = newRecord;
 }
 
 template<typename type>
-void Vector<type>::popBack() {
-    if(usingDataSize > 0) --usingDataSize;
+void Vector<type>::popBack()
+{
+    if(usingDataSize > 0) erase(usingDataSize-1);
     else logger.message(Message::WARN_VEC_EMPTY);
 }
 
 template<typename type>
-bool Vector<type>::isEmpty() {
-    return usingDataSize == 0 ? true : false;
+bool Vector<type>::isEmpty()
+{
+    return (usingDataSize == 0);
 }
 
 template<typename type>
-void Vector<type>::clear() {
+void Vector<type>::clear()
+{
+    if (std::is_pointer<type>::value)
+    {
+        for (size_t i = 0; i < usingDataSize; i++) delete data[i];
+    }
     delete[] data;
 
     data = new type[defaultAllocationSize];
@@ -219,24 +237,30 @@ void Vector<type>::clear() {
 }
 
 template<typename type>
-void Vector<type>::shrinkToFit() {
+void Vector<type>::shrinkToFit()
+{
     changeVectorSize(usingDataSize);
 }
 
 template<typename type>
-void Vector<type>::erase(size_t index) {
-    if (index >= 0 && index <= usingDataSize) {
+void Vector<type>::erase(size_t index)
+{
+    if (index >= 0 && index <= usingDataSize)
+    {
+        type toDelete = data[index];
         type* i = &data[index+1];
         type* j = &data[index];
 
         for (; i < (data + usingDataSize); ++i, ++j) *j = *i;
 
+        if (std::is_pointer<type>::value) delete toDelete;
         usingDataSize--;
     } else logger.message(Message::WARN_INDEX_OUT_OF_RANGE);
 }
 
 template<typename type>
-inline void Vector<type>::insert(const type& obj, size_t ind) {
+inline void Vector<type>::insert(const type& obj, size_t ind)
+{
     if (ind <= usingDataSize) {
         if (usingDataSize >= allocatedDataSize) changeVectorSize(allocatedDataSize * 2);
         usingDataSize++;
@@ -246,17 +270,26 @@ inline void Vector<type>::insert(const type& obj, size_t ind) {
 }
 
 template<typename type>
-inline void Vector<type>::showVectorData() {
-    if (this->usingDataSize > 0) {
-        cout << "\nVector data: " << endl;
-        for (size_t i = 0; i < this->usingDataSize; ++i) cout << "Obiekt " << i << " -> " << this->data[i] << endl;
+inline void Vector<type>::showVectorData()
+{
+    if (this->usingDataSize > 0)
+    {
+        for (size_t i = 0; i < this->usingDataSize; ++i)
+        {
+            cout << "Obiekt " << i << " -> ";
+            if (std::is_pointer<type>::value) cout << (*this->data[i]);
+            else cout << this->data[i];
+            cout << endl;
+        }
     } else logger.message(Message::WARN_VEC_EMPTY);
 }
 
 template<typename type>
-void Vector<type>::changeVectorSize(size_t newSizeValue) {
+void Vector<type>::changeVectorSize(size_t newSizeValue)
+{
     if (newSizeValue == allocatedDataSize) return;
-    if (data == nullptr) {
+    if (data == nullptr)
+    {
         usingDataSize = 0;
         allocatedDataSize = 0;
     }
@@ -272,12 +305,18 @@ void Vector<type>::changeVectorSize(size_t newSizeValue) {
     data = buffer;
 }
 
-template<class type, class Key>
-inline type* find(const type* p_begin, const type *p_end, const Key &k) {
-    if ((p_begin == nullptr) || (p_end == nullptr) || (p_begin > p_end)) return nullptr;
+template <typename type, typename Key>
+typename enable_if<is_pointer<type>::value, bool>::type isEqual(type val, const Key& keyVal) { return (*val == keyVal); }
 
+template <typename type, typename Key>
+typename enable_if<!is_pointer<type>::value, bool>::type isEqual(type val, const Key& keyVal) { return (val == keyVal); }
+
+template<class type, class Key>
+inline type* find(const type* p_begin, const type *p_end, const Key &k)
+{
+    if ((p_begin == nullptr) || (p_end == nullptr) || (p_begin > p_end)) return nullptr;
     type* p_tmp = const_cast<type*>(p_begin);
-    for (; p_tmp <= p_end; ++p_tmp) if (*p_tmp == k) return p_tmp;
+    for (; p_tmp <= p_end; ++p_tmp) if (isEqual(*p_tmp, k)) return p_tmp;
 
     return nullptr;
 }
