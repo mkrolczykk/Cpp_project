@@ -118,9 +118,8 @@ void Interface::insert()
 		cout << description[PUSH_INFO];
 		cin >> *newObj;
 		vector.insert(newObj, position);
+		cout << description[OBJ_ADDED] << endl;
 	}
-
-	cout << description[OBJ_ADDED] << endl;
 }
 
 void Interface::findObjects()
