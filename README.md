@@ -1,5 +1,14 @@
 # C++ OOP project
 
+
+## Table of contents
+
+- [Project description](#description)
+- [Status](#status)
+- [Contact](#contact)
+
+## Description
+
 ## Stage 1 (etap 1)
 
 #### Create an implementation of the `vector` container based on the declaration below. 
@@ -359,3 +368,13 @@ Wyszukiwania dokonuj za pomocą stworzonej funkcji find. Szukaj tylko po numerac
 &nbsp;
 
 &nbsp;
+
+## Status
+
+_completed_
+
+## Contact
+
+Created by @mkrolczyk12 - feel free to contact me!
+
+- E-mail: m.krolczyk66@gmail.com
