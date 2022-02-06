@@ -267,7 +267,7 @@ Stwórz obsługę błędów, ostrzeżeń i komunikatów. Wszystkie mają być za
 
 &nbsp;
 
-# Etap 4
+# Stage 4 (etap 4)
 
 #### 'find' function (funkcja find)
 
